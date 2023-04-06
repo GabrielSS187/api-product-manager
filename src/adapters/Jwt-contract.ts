@@ -1,5 +1,4 @@
 export type TJwtAuthenticationData = {
-  id: string | number;
   role: "admin" | "normal";
 };
 

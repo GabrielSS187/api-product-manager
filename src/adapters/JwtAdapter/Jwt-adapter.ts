@@ -7,11 +7,10 @@ import {
 } from "../Jwt-contract";
 
 export class JwtAdapter implements JwtContract {
-  generateToken ( {  id, role  }: TJwtAuthenticationData ) {
+  generateToken ( { role }: TJwtAuthenticationData ) {
     const expiresIn = 1647456000; //* 30 dias
     const token = jwt.sign(
       {
-        id,
         role
       },
         env.JWT_KEY as string,
@@ -25,7 +24,6 @@ export class JwtAdapter implements JwtContract {
   getToken ({ token }: TJwtGetTokenData) {
     const payload = jwt.verify(token, env.JWT_KEY as string) as TJwtAuthenticationData;
     const result = {
-      id: payload.id,
       role: payload.role
     };
     return result;
