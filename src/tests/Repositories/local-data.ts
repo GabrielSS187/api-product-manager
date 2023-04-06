@@ -20,7 +20,7 @@ type TProduct = {
   price: number;
 };
 
-export const UserList: TUser[] = [
+export const userList: TUser[] = [
   {
     _id: "41260479347907930",
     name: "Fulano Santos",
@@ -37,7 +37,7 @@ export const UserList: TUser[] = [
   }
 ];
 
-export const ProductList: TProduct[] = [
+export const productList: TProduct[] = [
   {
     _id: "188288293903",
     categories: [{
