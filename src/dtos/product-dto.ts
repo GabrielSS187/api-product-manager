@@ -1,15 +1,7 @@
-type TCategory = {
-  name: string;
-};
-
-type TCategoryData = {
-  _id: string;
-  name: string;
-  parent: string;
-};
+import { TCreateCategory, TCategoryData } from "./category-dto";
 
 export type TCreateProduct = {
-  categories: TCategory[];
+  categories: TCreateCategory[];
   name: string;
   qty: number;
   price: number;
