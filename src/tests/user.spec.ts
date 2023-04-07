@@ -1,6 +1,6 @@
-import { describe, test, expect, vi, afterEach } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 
-import { userList } from "./database-local/local-data";
+import { userList } from "./bd-in-memory/local-data";
 import { CreateUserCase } from "../use-cases/User/Create-user-case";
 import { LoginUserCase } from "../use-cases/User/Login-user-case";
 import { UserRepositoryInMemory } from "./repositories/User-repository-in-memory";
