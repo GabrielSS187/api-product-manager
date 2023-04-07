@@ -2,7 +2,7 @@ import { ZodError } from "zod";
 import { UserRepositoryContract } from "../../repositories/User-repository-contract";
 import { BCryptContract } from "../../adapters/Bcrypt-contract";
 import { TCreateUserRequest, createUserSchema } from "./schemas";
-import { UserErrors } from "../../errors/UserErrors";
+import { UserError } from "../../errors/User-error";
 
 export class CreateUserCase {
   constructor(
@@ -19,7 +19,7 @@ export class CreateUserCase {
       createUserSchema.parse(request);
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new UserErrors(error.issues[0].message, 406);
+        throw new UserError(error.issues[0].message, 406);
       }
     };
 
@@ -28,7 +28,7 @@ export class CreateUserCase {
 
     const user = await this.userRepository.findUserByEmail(email);
     if ( user ) {
-      throw new UserErrors(
+      throw new UserError(
         "There is already a registered user with this email.",
         409
       );

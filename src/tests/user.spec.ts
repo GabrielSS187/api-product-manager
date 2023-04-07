@@ -6,7 +6,7 @@ import { LoginUserCase } from "../use-cases/User/Login-user-case";
 import { UserRepositoryInMemory } from "./repositories/User-repository-in-memory";
 import { JwtAdapter } from "../adapters/JwtAdapter/Jwt-adapter";
 import { BCryptAdapter } from "../adapters/BcryptAdapter/Bcrypt-adapter";
-import { UserErrors } from "../errors/UserErrors";
+import { UserError } from "../errors/User-error";
 
 const sutFactory = () => {
 	const userRepositoryInMemory = new UserRepositoryInMemory();
@@ -97,7 +97,7 @@ describe("Create-user-case", () => {
 			expect(result.statusCode).not.toBe(201);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(409);
 			expect(error.message).toBe("There is already a registered user with this email.");
 		}
@@ -123,7 +123,7 @@ describe("Create-user-case", () => {
 			expect(result.statusCode).not.toBe(201);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("String must contain at least 5 character(s)");
 		}
@@ -149,7 +149,7 @@ describe("Create-user-case", () => {
 			expect(result.statusCode).not.toBe(201);
       // rome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
-      expect(error).toBeInstanceOf(UserErrors);
+      expect(error).toBeInstanceOf(UserError);
       expect(error.statusCode).toBe(406);
       expect(error.message).toBe("Email invalid.");
     }
@@ -175,7 +175,7 @@ describe("Create-user-case", () => {
 			expect(result.statusCode).not.toBe(201);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("Password cannot contain spaces.");
 		}
@@ -237,7 +237,7 @@ describe("Login-user-case", () => {
 			expect(result.statusCode).not.toBe(200);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(404);
 			expect(error.message).toBe("User not found.");
 		};
@@ -260,7 +260,7 @@ describe("Login-user-case", () => {
 			expect(result.statusCode).not.toBe(200);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("Incorrect password.");
 		};
@@ -281,7 +281,7 @@ describe("Login-user-case", () => {
 			expect(result.statusCode).not.toBe(200);
 			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (error: any) {
-			expect(error).toBeInstanceOf(UserErrors);
+			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("Email invalid.");
 		};

@@ -1,6 +1,6 @@
-import { CustomError } from "./CustomError";
+import { CustomError } from "./Custom-error";
 
-export class UserErrors extends CustomError {
+export class CategoryError extends CustomError {
   constructor(
     public error: string,
     public statusCode: number

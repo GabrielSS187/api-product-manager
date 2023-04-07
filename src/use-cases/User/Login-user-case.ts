@@ -3,7 +3,7 @@ import { UserRepositoryContract } from "../../repositories/User-repository-contr
 import { BCryptContract } from "../../adapters/Bcrypt-contract";
 import { JwtContract } from "../../adapters/Jwt-contract";
 import { TLoginUserRequest, loginUserSchema } from "./schemas";
-import { UserErrors } from "../../errors/UserErrors";
+import { UserError } from "../../errors/User-error";
 
 export class LoginUserCase {
   constructor (
@@ -17,7 +17,7 @@ export class LoginUserCase {
       loginUserSchema.parse(request);
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new UserErrors(error.issues[0].message, 406);
+        throw new UserError(error.issues[0].message, 406);
       }
     };
 
@@ -26,13 +26,13 @@ export class LoginUserCase {
     const foundUser = await this.userRepository
     .findUserByEmail(email);
     if ( !foundUser ) {
-      throw new UserErrors("User not found.", 404);
+      throw new UserError("User not found.", 404);
     };
 
     const verifyPassword = await this.bcrypt
     .compareHash({ password, passwordDatabase: foundUser.password });
     if ( !verifyPassword ) {
-      throw new UserErrors("Incorrect password.", 406);
+      throw new UserError("Incorrect password.", 406);
     };
 
     const generateTokenJwt = this.jwt
