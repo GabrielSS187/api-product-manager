@@ -10,7 +10,7 @@ export const createUserSchema = z.object({
 });
 
 export const loginUserSchema = z.object({
-  userName: string().trim(),
+  email: string().trim().email("Email invalid."),
   password: string().trim(),
 });
 

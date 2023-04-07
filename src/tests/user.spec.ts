@@ -17,7 +17,7 @@ const sutFactory = () => {
 	return { sut, mockBCrypt };
 };
 
-describe("Create-user", () => {
+describe("Create-user-case", () => {
 	test("It should create user.", async () => {
 		const { sut, mockBCrypt } = sutFactory();
 
