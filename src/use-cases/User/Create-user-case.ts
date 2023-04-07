@@ -19,7 +19,7 @@ export class CreateUserCase {
       createUserSchema.parse(request);
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new UserErrors({error: error.issues[0].message}, 406);
+        throw new UserErrors(error.issues[0].message, 406);
       }
     };
 
@@ -29,7 +29,7 @@ export class CreateUserCase {
     const user = await this.userRepository.findUserByEmail(email);
     if ( user ) {
       throw new UserErrors(
-        { error: "There is already a registered user with this email" },
+        "There is already a registered user with this email.",
         409
       );
     };
@@ -49,7 +49,7 @@ export class CreateUserCase {
 
     return {
       statusCode: 201,
-      message: request
+      success: request
     };
   };
 };

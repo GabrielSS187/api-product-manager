@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "start:dev": "tsx watch src/use-cases/User/Create-user-case.ts",
+    "start:dev": "tsx watch src/index.ts",
     "build": "tsup src",
     "test": "vitest",
     "coverage": "vitest run --coverage"
