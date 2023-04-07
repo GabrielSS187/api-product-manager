@@ -2,8 +2,10 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors, { CorsOptions } from "cors";
 import { AddressInfo } from "net";
 import { env } from "process";
+import { config } from "dotenv";
 
 export const app: Express = express();
+config();
 
 //* Definir as origens permitidas
 const whitelist = [env.URL_APP];

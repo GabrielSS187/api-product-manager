@@ -1,10 +1,13 @@
 import { env } from "process";
+import { config } from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { 
   JwtContract,
   TJwtAuthenticationData,
   TJwtGetTokenData
 } from "../Jwt-contract";
+
+config();
 
 export class JwtAdapter implements JwtContract {
   generateToken ( { role }: TJwtAuthenticationData ) {

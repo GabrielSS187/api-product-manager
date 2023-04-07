@@ -1,5 +1,8 @@
 import { env } from "process";
+import { config } from "dotenv";
 import * as bcrypt from "bcryptjs";
+
+config();
 
 import { 
   BCryptContract,

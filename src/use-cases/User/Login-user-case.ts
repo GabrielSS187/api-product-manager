@@ -39,7 +39,8 @@ export class LoginUserCase {
     .generateToken({ role: foundUser.role });
 
     return {
-      success: foundUser.name,
+      statusCode: 200,
+      name: foundUser.name,
       token: generateTokenJwt,
     };
   };

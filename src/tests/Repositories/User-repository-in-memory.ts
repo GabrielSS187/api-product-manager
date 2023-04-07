@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { TCreateUserDto, UserDataDto } from "../../dtos/user-dtos";
 import { UserRepositoryContract } from "../../repositories/User-repository-contract";
 
-import { userList } from "./local-data";
+import { userList } from "../database-local/local-data";
 
 export class UserRepositoryInMemory 
 implements UserRepositoryContract {
