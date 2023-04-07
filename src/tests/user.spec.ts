@@ -266,6 +266,24 @@ describe("Login-user-case", () => {
 		};
 		
 		expect(spyCompareHash).toHaveBeenCalledOnce();
+
+		spyCompareHash.mockRestore();
+	});
+
+	test("Must not log in if any properties are empty.", async () => {
+		const { sutLoginUser } = sutFactory();
+
+		try {
+			const result = await sutLoginUser.login({
+				email: "",
+				password: "12345678",
+			});
+			expect(result.statusCode).not.toBe(200);
+			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			expect(error).toBeInstanceOf(UserErrors);
+			expect(error.statusCode).toBe(406);
+			expect(error.message).toBe("Email invalid.");
+		};
 	});
 });
-
