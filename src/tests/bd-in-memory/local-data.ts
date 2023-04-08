@@ -68,3 +68,5 @@ export const productList: TProduct[] = [
     price: 5000000
   }
 ];
+
+export const categories: TCategory[] = []; 
