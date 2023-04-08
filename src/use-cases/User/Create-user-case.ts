@@ -41,12 +41,17 @@ export class CreateUserCase {
 		);
 		if (adminUserEmailAccepted) role = "admin";
 
-		await this.userRepository.create({
-			name,
-			email,
-			password: encryptPassword,
-			role,
-		});
+		try {
+			await this.userRepository.create({
+				name,
+				email,
+				password: encryptPassword,
+				role,
+			});
+			
+		} catch (error) {
+			throw new UserError(`${error}`, 500);
+		}
 
 		return {
 			statusCode: 201,
