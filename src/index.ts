@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { app } from "./config/server";
 import "express-async-errors";
 
-import { CustomError } from "./errors/CustomError";
+import { CustomError } from "./errors/Custom-error";
 
 app.get("/", (req: Request, res: Response): Response => {
 	return res.status(200).send("Testando!");
