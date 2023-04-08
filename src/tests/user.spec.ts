@@ -14,17 +14,13 @@ const sutFactory = () => {
 	const bcrypt = new BCryptAdapter();
 
 	const sutCreateUser = new CreateUserCase(userRepositoryInMemory, bcrypt);
-	const sutLoginUser = new LoginUserCase(
-		userRepositoryInMemory,
-		bcrypt,
-		jwt,
-	);
+	const sutLoginUser = new LoginUserCase(userRepositoryInMemory, bcrypt, jwt);
 
-	return { 
+	return {
 		sutCreateUser,
 		sutLoginUser,
 		bcrypt,
-		jwt
+		jwt,
 	};
 };
 
@@ -49,7 +45,7 @@ describe("Create-user-case", () => {
 		expect(foundUser).toBeDefined();
 		expect(foundUser).toHaveProperty("_id");
 		expect(foundUser).toHaveProperty("role");
-    expect(foundUser?.password).toHaveLength(60);
+		expect(foundUser?.password).toHaveLength(60);
 		expect(foundUser?.role).toBeDefined();
 		expect(foundUser?.role).toBe("normal");
 
@@ -99,7 +95,9 @@ describe("Create-user-case", () => {
 		} catch (error: any) {
 			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(409);
-			expect(error.message).toBe("There is already a registered user with this email.");
+			expect(error.message).toBe(
+				"There is already a registered user with this email.",
+			);
 		}
 
 		expect(spyHashEncrypt).not.toHaveBeenCalled();
@@ -113,7 +111,7 @@ describe("Create-user-case", () => {
 		const spyHashEncrypt = vi.spyOn(bcrypt, "hashEncrypt");
 
 		const newUser = {
-      name: "",
+			name: "",
 			email: "gabriel_silva@gmail.com",
 			password: "1111111",
 		};
@@ -134,38 +132,38 @@ describe("Create-user-case", () => {
 		spyHashEncrypt.mockRestore();
 	});
 
-  test("Should throw an error if the mail is not in a correct format.", async () => {
-    const { sutCreateUser, bcrypt } = sutFactory();
-		const spyHashEncrypt = vi.spyOn(bcrypt, "hashEncrypt");
-  
-    const newUser = {
-      name: "Maria Soares",
-      email: "maria_soaresil.com",
-      password: "1111111",
-    };
-  
-    try {
-      const result = await sutCreateUser.create(newUser);
-			expect(result.statusCode).not.toBe(201);
-      // rome-ignore lint/suspicious/noExplicitAny: <explanation>
-    } catch (error: any) {
-      expect(error).toBeInstanceOf(UserError);
-      expect(error.statusCode).toBe(406);
-      expect(error.message).toBe("Email invalid.");
-    }
-  
-    expect(spyHashEncrypt).not.toHaveBeenCalled();
-    expect(userList).toHaveLength(4);
-
-		spyHashEncrypt.mockRestore();
-  });
-
-  test("Do not create user if password contains blanks.", async () => {
+	test("Should throw an error if the mail is not in a correct format.", async () => {
 		const { sutCreateUser, bcrypt } = sutFactory();
 		const spyHashEncrypt = vi.spyOn(bcrypt, "hashEncrypt");
 
 		const newUser = {
-      name: "Carlos",
+			name: "Maria Soares",
+			email: "maria_soaresil.com",
+			password: "1111111",
+		};
+
+		try {
+			const result = await sutCreateUser.create(newUser);
+			expect(result.statusCode).not.toBe(201);
+			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			expect(error).toBeInstanceOf(UserError);
+			expect(error.statusCode).toBe(406);
+			expect(error.message).toBe("Email invalid.");
+		}
+
+		expect(spyHashEncrypt).not.toHaveBeenCalled();
+		expect(userList).toHaveLength(4);
+
+		spyHashEncrypt.mockRestore();
+	});
+
+	test("Do not create user if password contains blanks.", async () => {
+		const { sutCreateUser, bcrypt } = sutFactory();
+		const spyHashEncrypt = vi.spyOn(bcrypt, "hashEncrypt");
+
+		const newUser = {
+			name: "Carlos",
 			email: "carlos@gmail.com",
 			password: "111 1115",
 		};
@@ -208,7 +206,7 @@ describe("Login-user-case", () => {
 		const result = await sutLoginUser.login({
 			email: "kaka@gmail.com",
 			password: "12345678",
-		});		
+		});
 
 		expect(result).toBeDefined();
 		expect(result.statusCode).toBe(200);
@@ -223,7 +221,7 @@ describe("Login-user-case", () => {
 	});
 
 	test("Should generate an error if email does not exist.", async () => {
-		const { sutLoginUser, jwt, bcrypt} = sutFactory();
+		const { sutLoginUser, jwt, bcrypt } = sutFactory();
 		const spyHashEncrypt = vi.spyOn(bcrypt, "hashEncrypt");
 		const spyJwtGenerateToken = vi.spyOn(jwt, "generateToken");
 
@@ -240,10 +238,10 @@ describe("Login-user-case", () => {
 			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(404);
 			expect(error.message).toBe("User not found.");
-		};
+		}
 		expect(spyHashEncrypt).not.toHaveBeenCalled();
 		expect(spyJwtGenerateToken).not.toHaveBeenCalled();
-		
+
 		spyHashEncrypt.mockRestore();
 		spyJwtGenerateToken.mockRestore();
 	});
@@ -263,8 +261,8 @@ describe("Login-user-case", () => {
 			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("Incorrect password.");
-		};
-		
+		}
+
 		expect(spyCompareHash).toHaveBeenCalledOnce();
 
 		spyCompareHash.mockRestore();
@@ -284,6 +282,6 @@ describe("Login-user-case", () => {
 			expect(error).toBeInstanceOf(UserError);
 			expect(error.statusCode).toBe(406);
 			expect(error.message).toBe("Email invalid.");
-		};
+		}
 	});
 });
