@@ -50,11 +50,11 @@ export class CreateUserCase {
 			});
 		} catch (error) {
 			throw new UserError(`${error}`, 500);
-		};
+		}
 
 		return {
 			statusCode: 201,
 			success: request,
 		};
-	};
-};
+	}
+}
