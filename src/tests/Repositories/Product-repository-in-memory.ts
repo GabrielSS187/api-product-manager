@@ -2,10 +2,16 @@ import crypto from "node:crypto";
 import { TCategoryData, TCreateProduct, TProductData } from "../../dtos/product-dto";
 import { ProductRepositoryContract } from "../../repositories/Product-repository-contract";
 import { productList, categories } from "../bd-in-memory/local-data";
+import { ProductError } from "../../errors/Product-error";
 
 type TEditProduct = {
   id: string;
   data: TCreateProduct;
+};
+
+type TGetProduct = {
+  id: string;
+  name: string;
 };
 
 export class ProductRepositoryInMemory 
@@ -18,14 +24,6 @@ implements ProductRepositoryContract {
       qty,
       price,
      } = params;
-
-     const filteredCategory = categories.filter((category) => {
-      return listCategory.includes(category.name);
-     });
-
-     if ( filteredCategory.length > 0 ) {
-      throw new Error("This category has already been added to this product.");
-     };
 
      function createCategories (parent: string) {
       const receiverCategories = [];
@@ -47,13 +45,22 @@ implements ProductRepositoryContract {
       categories: createCategories(productId), 
       name,
       qty,
-      price
+      price,
+      created_at: new Date(),
      });
   };
 
-  async getProduct ( id: string ): Promise<TProductData> {
+  async getProduct ( params: TGetProduct ): Promise<TProductData> {
+    if ( params.name ) {
+      const productFound = productList.find((product) => {
+        return product.name === params.name;
+      });
+      // rome-ignore lint/style/noNonNullAssertion: <explanation>
+      return  productFound!;
+    };
+
     const productFound = productList.find((product) => {
-      return product._id === id;
+      return product._id === params.id;
     });
     // rome-ignore lint/style/noNonNullAssertion: <explanation>
     return  productFound!;
@@ -76,10 +83,20 @@ implements ProductRepositoryContract {
       return product._id === id;
     });
 
+    const existingCategories = [];
+
+    if ( existingCategories.length > 0 ) {
+      throw new ProductError("This category has already been added to this product.", 409);
+     };
+
     for ( let i = 0; i < categories.length; i++ ) {
+      if ( categories[i] === findProduct?.categories[i].name ) {
+        existingCategories.push(categories[i]);
+      };
       // rome-ignore lint/style/noNonNullAssertion: <explanation>
-      findProduct!.categories[i].name = categories[i]
+      findProduct!.categories[i].name = categories[i];
     };
+
     // rome-ignore lint/style/noNonNullAssertion: <explanation>
     findProduct!.name = name;
      // rome-ignore lint/style/noNonNullAssertion: <explanation>

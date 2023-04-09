@@ -18,6 +18,7 @@ type TProduct = {
   name: string;
   qty: number;
   price: number;
+  created_at?: Date;
 };
 
 export const userList: TUser[] = [
@@ -69,4 +70,8 @@ export const productList: TProduct[] = [
   }
 ];
 
-export const categories: TCategory[] = []; 
+export const categories: TCategory[] = [{
+  _id: "173947934844343032",
+  name: "monitor",
+  parent: "null",
+}]; 

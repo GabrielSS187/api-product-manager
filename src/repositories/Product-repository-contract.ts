@@ -5,9 +5,14 @@ type TEditProduct = {
   data: TCreateProduct;
 };
 
+type TGetProduct = {
+  id?: string;
+  name?: string;
+};
+
 export abstract class ProductRepositoryContract {
   abstract create ( params: TCreateProduct ): Promise<void>;
-  abstract getProduct ( id: string ): Promise<TProductData>;
+  abstract getProduct ( params: TGetProduct ): Promise<TProductData>;
   abstract getAllProducts (): Promise<TProductData[] | []>;
   abstract editProduct ( params: TEditProduct ): Promise<void>;
   abstract deleteProduct ( id: string ): Promise<void>;

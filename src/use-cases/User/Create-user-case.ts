@@ -48,14 +48,13 @@ export class CreateUserCase {
 				password: encryptPassword,
 				role,
 			});
-			
 		} catch (error) {
 			throw new UserError(`${error}`, 500);
-		}
+		};
 
 		return {
 			statusCode: 201,
 			success: request,
 		};
-	}
-}
+	};
+};
