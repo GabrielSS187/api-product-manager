@@ -28,15 +28,15 @@ export class CreateProductCase {
 			}
 		}
 
-		const { body } = request;
+		const { body: {categories, name, price, qty} } = request;
 
-		if (body.categories.length > 2) {
+		if (categories.length > 2) {
 			throw new ProductError("You cannot choose more than 2 categories.", 406);
 		}
 
 		const filteredCategoriesBody = this.#allowedCategories.filter(
 			(category) => {
-				return body.categories.includes(category);
+				return categories.includes(category);
 			},
 		);
 		if (filteredCategoriesBody.length === 0) {
@@ -49,14 +49,23 @@ export class CreateProductCase {
 		}
 
 		const searchProduct = await this.productRepository.getProduct({
-			name: body.name.trim(),
+			name: name.trim(),
 		});
 		if (searchProduct) {
 			throw new ProductError("A product with that name already exists.", 409);
 		}
 
+    const formattedArrayCategories = categories.map(
+			(category) => category.trim(),
+		);
+
 		try {
-			await this.productRepository.create(body);
+			await this.productRepository.create({
+        categories: formattedArrayCategories,
+        name,
+        price,
+        qty,
+      });
 		} catch (error) {
 			throw new ProductError(`${error}`, 500);
 		}

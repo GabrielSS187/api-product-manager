@@ -62,10 +62,13 @@ export class EditProductCase {
 		const formattedArrayCategories = searchProduct.categories.map(
 			(category) => category.name,
 		);
+    const formattedArrayCategoriesBody = body.categories?.map(
+			(category) => category.trim(),
+		);
 
 		const infoProduct = {
-			categories: body.categories || formattedArrayCategories,
-			name: body.name || searchProduct.name,
+			categories: formattedArrayCategoriesBody || formattedArrayCategories,
+			name: body.name?.trim() || searchProduct.name,
 			qty: body.qty || searchProduct.qty,
 			price: body.price || searchProduct.price,
 		};
