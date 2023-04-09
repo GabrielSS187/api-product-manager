@@ -28,7 +28,9 @@ export class CreateProductCase {
 			}
 		}
 
-		const { body: {categories, name, price, qty} } = request;
+		const {
+			body: { categories, name, price, qty },
+		} = request;
 
 		if (categories.length > 2) {
 			throw new ProductError("You cannot choose more than 2 categories.", 406);
@@ -55,17 +57,17 @@ export class CreateProductCase {
 			throw new ProductError("A product with that name already exists.", 409);
 		}
 
-    const formattedArrayCategories = categories.map(
-			(category) => category.trim(),
+		const formattedArrayCategories = categories.map((category) =>
+			category.trim(),
 		);
 
 		try {
 			await this.productRepository.create({
-        categories: formattedArrayCategories,
-        name,
-        price,
-        qty,
-      });
+				categories: formattedArrayCategories,
+				name,
+				price,
+				qty,
+			});
 		} catch (error) {
 			throw new ProductError(`${error}`, 500);
 		}
