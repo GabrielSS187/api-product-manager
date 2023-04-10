@@ -1,22 +1,29 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import {
+	TCreateCategory,
+	TCreateProduct,
+	TCategoryData,
+} from "../dtos/product-dto";
 
-const categorySchema = new mongoose.Schema({
-  parent: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
-    default: null,
-  },
-  name: { type: String, required: true, unique: true },
+const categorySchema: Schema = new mongoose.Schema({
+	parent: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Category",
+		default: null,
+	},
+	name: { type: String, required: true, unique: true },
 });
 
-const productSchema = new mongoose.Schema({
-  categories: [{ type: String, required: true, unique: true }],
-  name: { type: String, required: true },
-  qty: { type: Number, required: true },
-  price: { type: Number, required: true },
+const productSchema: Schema = new mongoose.Schema({
+	categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+	name: { type: String, required: true, unique: true },
+	qty: { type: Number, required: true },
+	price: { type: Number, required: true },
+	createdAt: { type: Date, default: Date.now },
 });
 
-const Category = mongoose.model("Category", categorySchema);
-const Product = mongoose.model("Product", productSchema);
-
-module.exports = { Category, Product };
+export const Category = mongoose.model<TCategoryData | TCreateCategory>(
+	"Category",
+	categorySchema,
+);
+export const Product = mongoose.model<TCreateProduct>("Product", productSchema);

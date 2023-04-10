@@ -1,9 +1,10 @@
+import { Types } from "mongoose";
+
 export type TCreateCategory = string[];
 
 export type TCategoryData = {
-  _id: string;
+  _id: Types.ObjectId | string;
   name: string;
-  parent: string;
 };
 
 export type TCreateProduct = {
@@ -19,5 +20,6 @@ export type TProductData = {
   name: string;
   qty: number;
   price: number;
-  createdAt: Date | string;
+  createdAt: Date;
+  __v: number;
 };
