@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export type TCreateUserDto = {
   name: string;
   email: string;
@@ -5,10 +7,13 @@ export type TCreateUserDto = {
   role: "admin" | "normal";
 };
 
-export type UserDataDto = {
-  _id: string;
+export type TUserDataDto = {
+  _id: Types.ObjectId | string;
   name: string;
   email: string;
   password: string; 
-  role: "admin" | "normal" 
+  role: "admin" | "normal" ;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
 }

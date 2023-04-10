@@ -19,4 +19,5 @@ export type TProductData = {
   name: string;
   qty: number;
   price: number;
+  createdAt: Date | string;
 };
