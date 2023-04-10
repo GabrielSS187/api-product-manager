@@ -1,5 +1,7 @@
 import { Types } from "mongoose";
 
+//* Usados no arq.  repositories/Product-repository-contract
+
 export type TCreateCategory = string[];
 
 export type TCategoryData = {

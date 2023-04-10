@@ -1,5 +1,7 @@
 import { Types } from "mongoose";
 
+//* Usados no arq.  repositories/User-repository-contract
+
 export type TCreateUserDto = {
   name: string;
   email: string;

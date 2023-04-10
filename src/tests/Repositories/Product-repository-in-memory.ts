@@ -43,24 +43,25 @@ export class ProductRepositoryInMemory implements ProductRepositoryContract {
 			name,
 			qty,
 			price,
-			created_at: new Date(),
+			createdAt: new Date(),
+			__v: 0,
 		});
 	}
 
-	async getProduct(params: TGetProduct): Promise<TProductData | undefined> {
+	async getProduct(params: TGetProduct): Promise<TProductData | null> {
 		if (params.name) {
 			const productFound = productList.find((product) => {
 				return product.name === params.name;
 			});
 			// rome-ignore lint/style/noNonNullAssertion: <explanation>
-			return productFound ? productFound : undefined;
+			return productFound ? productFound : null;
 		}
 
 		const productFound = productList.find((product) => {
 			return product._id === params.id;
 		});
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
-		return productFound ? productFound : undefined;
+		return productFound ? productFound : null;
 	}
 
 	async getAllProducts(): Promise<TProductData[] | []> {

@@ -61,7 +61,7 @@ describe("Create-product-case", () => {
 		expect(productList).toHaveLength(4);
 		expect(productAfterCreate).toBeDefined();
 		expect(productAfterCreate).toHaveProperty("_id");
-		expect(productAfterCreate).toHaveProperty("created_at");
+		expect(productAfterCreate).toHaveProperty("createdAt");
 		expect(productAfterCreate?.categories).toHaveLength(2);
 		expect(productAfterCreate?.categories[0]).toHaveProperty("_id");
 		expect(productAfterCreate?.categories[0]).toHaveProperty("parent");

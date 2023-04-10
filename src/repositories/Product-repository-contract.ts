@@ -1,5 +1,8 @@
 import { TCreateProduct, TProductData, TCategoryData } from "../dtos/product-dto";
 
+//* Usados nos arquivos. bd/BD-product-repository
+//* e tests/repositories/Product-repository-in-memory
+
 type TEditProduct = {
   id: string;
   data: TCreateProduct;
