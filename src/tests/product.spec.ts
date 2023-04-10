@@ -32,6 +32,8 @@ const sutFactory = () => {
 	};
 };
 
+
+//* 1
 describe("Create-product-case", () => {
 	const newProduct = {
 		name: "PlayStation 5",
@@ -216,6 +218,7 @@ describe("Create-product-case", () => {
 	});
 });
 
+//* 2
 describe("Edit-product-case", () => {
 	test("Must edit a product without errors", async () => {
 		const { sutEditProduct } = sutFactory();
@@ -414,6 +417,7 @@ describe("Edit-product-case", () => {
 	});
 });
 
+//* 3
 describe("Delete-product-case", () => {
 	test("Must delete a product if the user is an administrator.", async () => {
 		const { sutDeleteProduct } = sutFactory();
@@ -473,6 +477,7 @@ describe("Delete-product-case", () => {
 	});
 });
 
+//* 4
 describe("Get-product-case", () => {
 	test("It should return a product without error.", async () => {
 		const { sutGetProduct } = sutFactory();
@@ -505,6 +510,7 @@ describe("Get-product-case", () => {
 	});
 });
 
+//* 5
 describe("Get-all-products-case", () => {
 	test("Must return all products without error.", async () => {
 		const { sutGetAllProducts } = sutFactory();
@@ -519,6 +525,7 @@ describe("Get-all-products-case", () => {
 	});
 });
 
+//* 6
 describe("Get-all-categories-case", () => {
 	test("It should return all categories without error.", async () => {
 		const { sutGetAllCategories } = sutFactory();
