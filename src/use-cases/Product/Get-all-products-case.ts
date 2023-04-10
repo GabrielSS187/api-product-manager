@@ -2,28 +2,18 @@ import { ProductRepositoryContract } from "../../repositories/Product-repository
 import { TCreateUserRequest, createProductSchema } from "./schema";
 import { ProductError } from "../../errors/Product-error";
 
-export class GetProductCase {
+export class GetAllProductsCase {
 	constructor(private readonly productRepository: ProductRepositoryContract) {}
 
-	async getProduct(request: { id: string }) {
+	async getAllProducts() {
 		try {
-			const product = await this.productRepository.getProduct({
-				id: request.id,
-			});
-
-			if (!product) {
-				throw new ProductError("Product not found.", 404);
-			}
+			const products = await this.productRepository.getAllProducts();
 
 			return {
 				statusCode: 200,
-				success: product,
+				success: products,
 			};
 		} catch (error) {
-			if (error instanceof ProductError) {
-				throw new ProductError(error.message, error.statusCode);
-			}
-
 			throw new ProductError(`${error}`, 500);
 		}
 	}

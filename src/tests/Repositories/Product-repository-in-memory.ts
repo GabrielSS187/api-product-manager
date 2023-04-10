@@ -47,20 +47,20 @@ export class ProductRepositoryInMemory implements ProductRepositoryContract {
 		});
 	}
 
-	async getProduct(params: TGetProduct): Promise<TProductData> {
+	async getProduct(params: TGetProduct): Promise<TProductData | undefined> {
 		if (params.name) {
 			const productFound = productList.find((product) => {
 				return product.name === params.name;
 			});
 			// rome-ignore lint/style/noNonNullAssertion: <explanation>
-			return productFound!;
+			return productFound ? productFound : undefined;
 		}
 
 		const productFound = productList.find((product) => {
 			return product._id === params.id;
 		});
 		// rome-ignore lint/style/noNonNullAssertion: <explanation>
-		return productFound!;
+		return productFound ? productFound : undefined;
 	}
 
 	async getAllProducts(): Promise<TProductData[] | []> {
@@ -105,7 +105,7 @@ export class ProductRepositoryInMemory implements ProductRepositoryContract {
 			return product._id === id;
 		});
 
-		productList.splice(indexProduct, 1);
+		productList.splice(1, indexProduct);
 	}
 
 	async getAllCategories(): Promise<TCategoryData[] | []> {

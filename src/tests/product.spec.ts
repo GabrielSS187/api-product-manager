@@ -3,6 +3,10 @@ import { describe, test, expect, vi } from "vitest";
 import { productList, categories } from "./bd-in-memory/local-data";
 import { CreateProductCase } from "../use-cases/Product/Create-product-case";
 import { EditProductCase } from "../use-cases/Product/Edit-product-case";
+import { DeleteProductCase } from "../use-cases/Product/Delete-product-case";
+import { GetProductCase } from "../use-cases/Product/Get-product-case";
+import { GetAllProductsCase } from "../use-cases/Product/Get-all-products-case";
+import { GetAllCategoriesCase } from "../use-cases/Product/Get-all-categories-case";
 import { ProductRepositoryInMemory } from "./repositories/Product-repository-in-memory";
 import { ProductError } from "../errors/Product-error";
 
@@ -11,10 +15,20 @@ const sutFactory = () => {
 
 	const sutCreateProduct = new CreateProductCase(productRepositoryInMemory);
 	const sutEditProduct = new EditProductCase(productRepositoryInMemory);
+	const sutDeleteProduct = new DeleteProductCase(productRepositoryInMemory);
+	const sutGetProduct = new GetProductCase(productRepositoryInMemory);
+	const sutGetAllProducts = new GetAllProductsCase(productRepositoryInMemory);
+	const sutGetAllCategories = new GetAllCategoriesCase(
+		productRepositoryInMemory,
+	);
 
 	return {
 		sutCreateProduct,
 		sutEditProduct,
+		sutDeleteProduct,
+		sutGetProduct,
+		sutGetAllProducts,
+		sutGetAllCategories,
 	};
 };
 
@@ -397,5 +411,124 @@ describe("Edit-product-case", () => {
 				"The only allowed categories are: pc,console,monitor,game.",
 			);
 		}
+	});
+});
+
+describe("Delete-product-case", () => {
+	test("Must delete a product if the user is an administrator.", async () => {
+		const { sutDeleteProduct } = sutFactory();
+
+		const result = await sutDeleteProduct.delete({
+			role: "admin",
+			id: "55757957544444",
+		});
+
+		expect(result).toEqual({
+			statusCode: 200,
+			success: "Product deleted.",
+		});
+		expect(productList.length).toBe(2);
+	});
+
+	test("Should throw an error if the user is not admin.", async () => {
+		const { sutDeleteProduct } = sutFactory();
+
+		try {
+			const result = await sutDeleteProduct.delete({
+				role: "normal",
+				id: "55757957544444",
+			});
+
+			expect(result).toBeUndefined();
+			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			expect(error).toBeInstanceOf(ProductError);
+			expect(error.statusCode).toBe(401);
+			expect(error.message).toBe(
+				"Not authorized. You are not an administrator.",
+			);
+		}
+
+		expect(productList.length).toBe(2);
+	});
+
+	test("Should throw an error if the product does not exist.", async () => {
+		const { sutDeleteProduct } = sutFactory();
+
+		try {
+			const result = await sutDeleteProduct.delete({
+				role: "admin",
+				id: "55757",
+			});
+
+			expect(result).toBeUndefined();
+			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			expect(error).toBeInstanceOf(ProductError);
+			expect(error.statusCode).toBe(404);
+			expect(error.message).toBe("Product not found");
+		}
+
+		expect(productList.length).toBe(2);
+	});
+});
+
+describe("Get-product-case", () => {
+	test("It should return a product without error.", async () => {
+		const { sutGetProduct } = sutFactory();
+
+		const result = await sutGetProduct.getProduct({ id: "188288293903" });
+
+		const product = productList.find((item) => item._id === "188288293903");
+
+		expect(result).toEqual({
+			statusCode: 200,
+			success: product,
+		});
+	});
+
+	test("Should throw an error if the product does not exist.", async () => {
+		const { sutGetProduct } = sutFactory();
+
+		try {
+			const result = await sutGetProduct.getProduct({
+				id: "1882882",
+			});
+
+			expect(result).toBeUndefined();
+			// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
+			expect(error).toBeInstanceOf(ProductError);
+			expect(error.statusCode).toBe(404);
+			expect(error.message).toBe("Product not found.");
+		}
+	});
+});
+
+describe("Get-all-products-case", () => {
+	test("Must return all products without error.", async () => {
+		const { sutGetAllProducts } = sutFactory();
+
+		const result = await sutGetAllProducts.getAllProducts();
+
+		expect(result).toEqual({
+			statusCode: 200,
+			success: productList,
+		});
+		expect(result.success.length).toBeGreaterThan(0);
+	});
+});
+
+describe("Get-all-categories-case", () => {
+	test("It should return all categories without error.", async () => {
+		const { sutGetAllCategories } = sutFactory();
+
+		const result = await sutGetAllCategories.getAllCategories();
+
+		expect(result).toEqual({
+			statusCode: 200,
+			success: categories,
+		});
+		expect(result.success.length).toBeGreaterThan(0);
 	});
 });
