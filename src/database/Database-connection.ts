@@ -3,11 +3,14 @@ import { config } from "dotenv";
 import mongoose from "mongoose";
 
 config();
-// rome-ignore lint/style/noNonNullAssertion: <explanation>
-mongoose.connect(env.DATABASE_URL!)
-.then(() => {
-  console.log("Connected to MongoDB successfully 🎉.");
-})
-.catch((err) => {
-  console.log(err);
-});
+
+export async function main() {
+	try {
+		// rome-ignore lint/style/noNonNullAssertion: <explanation>
+		await mongoose.connect(env.DATABASE_URL!);
+
+		console.log("Connected to MongoDB successfully 🎉.");
+	} catch (error) {
+		console.log(`Error BD: ${error}`);
+	}
+}

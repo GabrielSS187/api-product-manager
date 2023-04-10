@@ -3,9 +3,11 @@ import cors, { CorsOptions } from "cors";
 import { AddressInfo } from "net";
 import { env } from "process";
 import { config } from "dotenv";
+import { main } from "../database/Database-connection";
 
 export const app: Express = express();
 config();
+main();
 
 //* Definir as origens permitidas
 const whitelist = [env.URL_APP];
