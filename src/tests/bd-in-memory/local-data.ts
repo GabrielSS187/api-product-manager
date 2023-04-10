@@ -60,13 +60,25 @@ export const productList: TProduct[] = [
     _id: "68838882997777",
     categories: [{
       _id: "75999",
-      name: "car",
+      name: "game",
       parent: "68838882997777"
     },
   ],
-    name: "Ferrari X 2030",
+    name: "GTA 5",
     qty: 3,
-    price: 5000000
+    price: 50
+  },
+  {
+    _id: "55757957544444",
+    categories: [{
+      _id: "75999",
+      name: "game",
+      parent: "55757957544444"
+    },
+  ],
+    name: "Nintendo I",
+    qty: 3,
+    price: 505
   }
 ];
 

@@ -24,8 +24,17 @@ export class EditProductCase {
 		const { id, body } = request;
 
 		const searchProduct = await this.productRepository.getProduct({ id });
+		const searchProductByName = await this.productRepository.getProduct({
+			name: body.name,
+		});
 		if (!searchProduct) {
 			throw new ProductError("Product not found.", 404);
+		}
+		if (searchProductByName) {
+			throw new ProductError(
+				"A product with that name already exists in the list.",
+				409,
+			);
 		}
 
 		try {
@@ -37,9 +46,12 @@ export class EditProductCase {
 		}
 
 		if (body.categories?.length) {
-			if (body.categories.length > 0 && searchProduct.categories.length === 2) {
+			const someCategories =
+				searchProduct.categories.length + body.categories.length;
+
+			if (someCategories > 2) {
 				throw new ProductError(
-					"This product already has two categories than the maximum number.",
+					"This product already has the maximum category number. Are you trying to add some more.",
 					406,
 				);
 			}
@@ -57,13 +69,26 @@ export class EditProductCase {
 					406,
 				);
 			}
+
+			const checkCategoryAlreadyExists = searchProduct.categories.filter(
+				(category) => {
+					return body.categories?.includes(category.name);
+				},
+			);
+
+			if (checkCategoryAlreadyExists.length > 0) {
+				throw new ProductError(
+					"This category has already been added to this product.",
+					409,
+				);
+			}
 		}
 
 		const formattedArrayCategories = searchProduct.categories.map(
 			(category) => category.name,
 		);
-    const formattedArrayCategoriesBody = body.categories?.map(
-			(category) => category.trim(),
+		const formattedArrayCategoriesBody = body.categories?.map((category) =>
+			category.trim(),
 		);
 
 		const infoProduct = {
@@ -81,5 +106,10 @@ export class EditProductCase {
 		} catch (error) {
 			throw new ProductError(`${error}`, 500);
 		}
+
+		return {
+			statusCode: 200,
+			success: searchProduct,
+		};
 	}
 }
