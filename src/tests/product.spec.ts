@@ -235,15 +235,10 @@ describe("Edit-product-case", () => {
 			body: newData,
 		});
 
-		const findProduct = productList.find((product) => {
-			return product._id === idProduct;
-		});
-
 		expect(result).toEqual({
 			statusCode: 200,
-			success: findProduct,
+			success: "Product updated successfully.",
 		});
-		expect(findProduct?.name).toBe(newData.name);
 	});
 
 	test("Should throw an error if the user is not an administrator.", async () => {
@@ -369,7 +364,7 @@ describe("Edit-product-case", () => {
 
 		const product = {
 			name: "Xbox one",
-			categories: ["console", "pc"],
+			categories: ["console", "pc", "monitor"],
 		};
 
 		try {

@@ -53,6 +53,17 @@ export class EditProductCase {
 				throw new ProductError(
 					"This product already has the maximum category number. Are you trying to add some more.",
 					406,
+					);
+				}
+
+				const existingCategoryInProduct = body.categories.some((category, i) =>
+					searchProduct.categories[i].name.includes(category),
+				);
+
+			if (existingCategoryInProduct) {
+				throw new ProductError(
+					"This category has already been added to this product.",
+					409,
 				);
 			}
 
@@ -109,7 +120,7 @@ export class EditProductCase {
 
 		return {
 			statusCode: 200,
-			success: searchProduct,
+			success: "Product updated successfully.",
 		};
 	}
 }

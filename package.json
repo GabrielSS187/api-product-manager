@@ -22,8 +22,6 @@
   },
   "homepage": "https://github.com/GabrielSS187/api-product-manager#readme",
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -36,6 +34,7 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.1",
+    "bcryptjs": "^2.4.3",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.3",

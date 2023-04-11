@@ -11,7 +11,8 @@ const categorySchema: Schema = new mongoose.Schema({
 		ref: "Category",
 		default: null,
 	},
-	name: { type: String, required: true, unique: true },
+	_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+	name: { type: String, required: true },
 });
 
 const productSchema: Schema = new mongoose.Schema({
